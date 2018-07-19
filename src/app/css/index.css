@@ -1,6 +1,6 @@
 body{
   background: #eee;
-  margin: 20px;
+  /* margin: 20px; */
   font-family: tahoma;
 }
 
@@ -99,7 +99,8 @@ border-bottom: 1px solid rgb(66, 78, 165);
 .filtersContainer {
   /* width: 200px; */
   height: 400px;
-  background-color:  #eee;
+  /* color: white;
+  background-color:  #88AAE6; */
   width: 800px;
   padding: 10px;
   box-sizing: border-box;
@@ -125,6 +126,8 @@ border-bottom: 1px solid rgb(66, 78, 165);
   .filtersContainer {
     order: 2;
     overflow: hidden;
+      color: white;
+  background-color:  #88AAE6;
   }
   .filtersContainer {
     order: -1;
@@ -179,14 +182,15 @@ border-bottom: 1px solid rgb(66, 78, 165);
   }
   .filtersContainer {
     width: 650px;
+    
   }
 }
 
-/* @media only screen and (max-width: 320px) { 
+@media only screen and (max-width: 320px) { 
   #todo-wrapper {
-    width: 300px
+    width: 300px;
   }
-  .listItem {
+  /* .listItem {
     width: 280px;
   }
   .search {
@@ -204,5 +208,5 @@ border-bottom: 1px solid rgb(66, 78, 165);
   }
   .filtersContainer {
     width: 650px;
-  }
-} */
+  } */
+}
