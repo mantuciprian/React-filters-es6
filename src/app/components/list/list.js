@@ -4,13 +4,20 @@ class ListComponent extends React.Component{
      super(props);
      this.state = {
          data: [
-             {make: 'BMW', model:'M3', year:2018,price:5600, country:'Germany', fuel:'gassoline', hp:'560', body:'coupe', color:'white'},
-             {make: 'Mercedes', model: 'E200', year:2018, price:7000, country:'Germany', fuel:'diesel', hp:'420', body:'sedan', color:'black'}
+             {make: 'BMW', model:'M3', year:2018,price:56000, country:'Germany', fuel:'gassoline', hp:'560', body:'coupe', color:'white'},
+             {make: 'Audi', model: 'Q7', year:2018, price:81000, country:'Germany', fuel:'diesel', hp:'390', body:'SUV', color:'silver'},
+             {make: 'Mercedes', model: 'E200', year:2018, price:70000, country:'Germany', fuel:'diesel', hp:'420', body:'sedan', color:'black'},
+             {make: 'Hyundai', model: 'i20', year:2016, price:27000, country:'Japan', fuel:'gassoline', hp:'120', body:'sedan', color:'silver'}
          ],
 
          // unitialized car list
-         cars: []
+         cars: [],
+         prices: []
      };
+     this.searchItem = this.searchItem.bind(this); 
+     this.sortAscPrice = this.sortAscPrice.bind(this);
+     this.sortDescPrice = this.sortDescPrice.bind(this);
+     this.priceRanger = this.priceRanger.bind(this);
  }
 
  componentWillMount() {
@@ -18,7 +25,19 @@ class ListComponent extends React.Component{
        cars : this.state.data
      });
 
-     this.searchItem = this.searchItem.bind(this); 
+     //get min and max price
+     let carPrices = [];
+     this.state.data.map((v) => {
+         carPrices.push(v);
+     })
+     let prices = carPrices.sort((a, b) => a.price - b.price);
+
+     this.setState({
+       prices: [prices[0].price, prices[prices.length-1].price]
+     });
+ }
+ componentDidMount() {
+    console.log(this.state.prices)
  }
 render() {
     return(
@@ -58,10 +77,14 @@ render() {
             <div className='filtersContainer'>
             <div>Filter by:</div>
             <div className='triangle'><i className="material-icons trig-ico">expand_more</i></div>
-
+            
+            <div className='space'></div>
             <div className='price-f'>
-             <button>ASC Price</button>
-             <button>DESC Price</button>
+             Price: 
+             <button onClick={this.sortAscPrice} className='price-btn'>ASC Price</button>
+             <button onClick={this.sortDescPrice} className='price-btn'>DESC Price</button>
+
+             Between: 0 <input onChange={this.priceRanger} type='range' min ={this.state.prices[0]} max={this.state.prices[1]}/> {this.state.maxPrice || 100000} $
             </div>
 
             </div> 
@@ -75,12 +98,50 @@ searchItem(event) {
   let list = this.state.data
   let searched = event.target.value.toLowerCase();
   this.setState({
+    searched: searched,
      cars: list.filter((v) => {
-         if(v.make.toLowerCase().indexOf(searched) !== -1 || v.model.toLowerCase().indexOf(searched) !== -1) {
-             return v;
+         if(v.make.toLowerCase().indexOf(searched) !== -1 || v.model.toLowerCase().indexOf(searched) !== -1 ) {
+               if(v.price <= this.state.maxPrice){
+                return v;
+               } else if(this.state.maxPrice === undefined) {
+                   return v
+            };
          };
-     })
+     }),
   });
+}
+
+sortAscPrice() {
+    this.setState({
+        cars: this.state.cars.sort((a, b) => a.price - b.price)
+    })
+}
+
+sortDescPrice() {
+    this.setState({
+        cars: this.state.cars.sort((a, b) => b.price - a.price)
+    })
+}
+
+priceRanger(event) {
+    let val= event.target.value;
+    
+    this.setState({
+        maxPrice: val,
+        cars : this.state.data.filter((v) => {
+            console.log(this.state.searched, 'from func')
+            if( v.price <= val ) {
+                if(this.state.searched !== undefined) {
+                    if(v.make.toLowerCase().indexOf(this.state.searched) !== -1 || v.model.toLowerCase().indexOf(this.state.searched) !== -1 ) {
+                        return v;
+                   }
+                } else {
+                    return v;
+                }
+            }
+        })
+    })
+
 }
 
 };
