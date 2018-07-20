@@ -84,7 +84,7 @@ render() {
              <button onClick={this.sortAscPrice} className='price-btn'>ASC Price</button>
              <button onClick={this.sortDescPrice} className='price-btn'>DESC Price</button>
 
-             Between: 0 <input onChange={this.priceRanger} type='range' min ={this.state.prices[0]} max={this.state.prices[1]}/> {this.state.maxPrice || 100000} $
+             Between: {this.state.prices[0] || 0} <input onChange={this.priceRanger} type='range' min ={this.state.prices[0]} max={this.state.prices[1]}/> {this.state.maxPrice || 100000} $
             </div>
 
             </div> 
