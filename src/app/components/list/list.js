@@ -20,6 +20,8 @@ class ListComponent extends React.Component{
      this.sortDescPrice = this.sortDescPrice.bind(this);
      this.priceRanger = this.priceRanger.bind(this);
      this.selectBrand = this.selectBrand.bind(this);
+     this.removeBrand = this.removeBrand.bind(this);
+    
  }
 
  componentWillMount() {
@@ -43,7 +45,7 @@ class ListComponent extends React.Component{
  }
 render() {
     return(
-        <div className='mainContainer'>
+        <div className='mainContainer' >
     
             <div className ='listContainer'>
             
@@ -90,8 +92,8 @@ render() {
             </div>
 
             <div className='brand'> <div>Brand:</div>  {this.state.data.map(v => <div onClick={this.selectBrand} className='brandName'>{v.make}</div>)}</div>
-        <div className='selectedBrands'>{this.state.selectedBrands.map((v)=> {
-            return <div className='brandItem'>{v} <span>X</span></div>
+        <div className='selectedBrands'>{this.state.selectedBrands.map((v, i)=> {
+            return <div className='brandItem' key={i}><span>{v}</span><span onClick={this.removeBrand} className='close'>X</span></div>
         })}
         </div>
 
@@ -110,10 +112,16 @@ searchItem(event) {
   this.setState({
     searched: searched,
      cars: list.filter((v) => {
+         // check for make or model
          if(v.make.toLowerCase().indexOf(searched) !== -1 || v.model.toLowerCase().indexOf(searched) !== -1 ) {
-               if(v.price <= this.state.maxPrice){
-                return v;
-               } else if(this.state.maxPrice === undefined) {
+         // check for brands
+             if(this.state.selectedBrands.indexOf(v.make) !== -1) {
+                 //check for price
+                if(v.price <= this.state.maxPrice){
+                    return v;
+                   }
+             }
+               else if(this.state.maxPrice === undefined) {
                    return v
             };
          };
@@ -152,19 +160,61 @@ priceRanger(event) {
         })
     })
 
+    // setTimeout(this.filterByBrand(), 200);
+
 }
+
+// filter in real time 
+componentDidUpdate(prevProps, prevState) {
+    if (this.state.selectedBrands > prevState.selectedBrands) {
+        this.filterByBrand()
+    }
+  }
 
 // filter by brands
 
 selectBrand(event) {
+    console.log(this.state.selectedBrands, 'initial')
   console.log(event.target.textContent);
   const brand = event.target.textContent;
 //   console.log('sb', sB)
-  this.setState({
-      selectedBrands: this.state.selectedBrands.concat([brand])
-  });
+  if(this.state.selectedBrands.indexOf(brand) === -1) {
+    this.setState({
+        selectedBrands: this.state.selectedBrands.concat([brand])
+    });
+  }
+  
+
+  // setTimeout(this.filterByBrand(), 1000);
+
   console.log(this.state.selectedBrands)
 }
+
+filterByBrand(){
+    this.setState({
+        cars: this.state.data.filter((v) => {
+            if(this.state.selectedBrands.indexOf(v.make) !== -1 ) {
+                if(v.price <= this.state.maxPrice) {
+                    return v;
+                   }else if(this.state.maxPrice === undefined) {
+                       return v;
+                   }
+            }
+          })
+    });
+}
+
+removeBrand(event) {
+    const brand = (event.target.previousSibling.textContent);
+    let currentStates = this.state.selectedBrands;
+    currentStates.splice(currentStates.indexOf(brand), 1);
+    this.setState({
+        selectedBrands: currentStates
+    });
+   this.filterByBrand();
+}
+
+
 
 };
 module.exports=ListComponent;

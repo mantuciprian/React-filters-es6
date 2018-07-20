@@ -173,10 +173,18 @@ border-bottom: 1px solid rgb(66, 78, 165);
   background-color: #5968D9;
   margin:2px 0px;
   display: flex;
+  color: white;
 }
 .brandItem {
   padding: 5px;
   margin: 2px;
+}
+.close {
+  color:red;
+  padding: 2px;
+  font-size: 10px;
+  position: relative;
+  top: -7px;
 }
 
 /* input styling */
