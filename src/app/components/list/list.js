@@ -10,14 +10,16 @@ class ListComponent extends React.Component{
              {make: 'Hyundai', model: 'i20', year:2016, price:27000, country:'Japan', fuel:'gassoline', hp:'120', body:'sedan', color:'silver'}
          ],
 
-         // unitialized car list
+         // unitialized states
          cars: [],
-         prices: []
+         prices: [],
+         selectedBrands: []
      };
      this.searchItem = this.searchItem.bind(this); 
      this.sortAscPrice = this.sortAscPrice.bind(this);
      this.sortDescPrice = this.sortDescPrice.bind(this);
      this.priceRanger = this.priceRanger.bind(this);
+     this.selectBrand = this.selectBrand.bind(this);
  }
 
  componentWillMount() {
@@ -87,6 +89,14 @@ render() {
              Between: {this.state.prices[0] || 0} <input onChange={this.priceRanger} type='range' min ={this.state.prices[0]} max={this.state.prices[1]}/> {this.state.maxPrice || 100000} $
             </div>
 
+            <div className='brand'> <div>Brand:</div>  {this.state.data.map(v => <div onClick={this.selectBrand} className='brandName'>{v.make}</div>)}</div>
+        <div className='selectedBrands'>{this.state.selectedBrands.map((v)=> {
+            return <div className='brandItem'>{v} <span>X</span></div>
+        })}
+        </div>
+
+
+
             </div> 
             
 
@@ -142,6 +152,18 @@ priceRanger(event) {
         })
     })
 
+}
+
+// filter by brands
+
+selectBrand(event) {
+  console.log(event.target.textContent);
+  const brand = event.target.textContent;
+//   console.log('sb', sB)
+  this.setState({
+      selectedBrands: this.state.selectedBrands.concat([brand])
+  });
+  console.log(this.state.selectedBrands)
 }
 
 };

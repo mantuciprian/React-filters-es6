@@ -157,6 +157,28 @@ border-bottom: 1px solid rgb(66, 78, 165);
   height:30px;
 }
 
+.brand {
+  margin-top:15px;
+  display: flex;
+  align-items: center;
+}
+.brandName {
+  margin-top:15px;
+  margin: 0px 5px;
+  border: 1px solid black;
+  padding: 5px;
+
+}
+.selectedBrands {
+  background-color: #5968D9;
+  margin:2px 0px;
+  display: flex;
+}
+.brandItem {
+  padding: 5px;
+  margin: 2px;
+}
+
 /* input styling */
 
 
