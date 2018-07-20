@@ -117,8 +117,8 @@ searchItem(event) {
          // check for brands
              if(this.state.selectedBrands.indexOf(v.make) !== -1) {
                  //check for price
-                if(v.price <= this.state.maxPrice){
-                    return v;
+                if(v.price <= this.state.maxPrice) {
+                 return v
                    }
              }
                else if(this.state.maxPrice === undefined) {
@@ -199,6 +199,8 @@ filterByBrand(){
                    }else if(this.state.maxPrice === undefined) {
                        return v;
                    }
+            }else if(this.state.selectedBrands.length === 0) {
+                return v;
             }
           })
     });
